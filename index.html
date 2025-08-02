@@ -2,52 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AN NANDI</title>
+  <meta name="description" content="AN NANDI - Your Trusted Local Hardware Store providing tools, plumbing, electrical goods, paints, and accessories." />
+  <meta name="keywords" content="hardware store, tools, plumbing, electrical goods, paints, accessories, local store" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header>
     <h1>AN NANDI</h1>
+    <p>Your Trusted Local Hardware Store</p>
     <nav>
       <ul>
-        <li><a href="#home">Home</a></li>
         <li><a href="#products">Products</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="#admin">Admin</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li>
+          <label><input type="checkbox" id="themeSwitcher" /> Dark Mode</label>
+        </li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
       </ul>
     </nav>
   </header>
 
-  <section id="home">
-    <h2>Welcome to Your Local Hardware Store</h2>
-    <p>We provide all types of tools, plumbing items, electrical goods, paints, and accessories.</p>
-  </section>
+  <main>
+    <section id="products">
+      <h2>Our Products</h2>
+      <div class="product-card" tabindex="0" role="button" data-product="handTools">Hand Tools</div>
+      <div class="product-card" tabindex="0" role="button" data-product="powerTools">Power Tools</div>
+      <div class="product-card" tabindex="0" role="button" data-product="waterTanks">Water Tanks</div>
+      <div class="product-card" tabindex="0" role="button" data-product="plumbingMaterials">Plumbing</div>
+      <div class="product-card" tabindex="0" role="button" data-product="paintsBrushes">Paints & Brushes</div>
 
-  <section id="products">
-    <h2>Our Products</h2>
-    <div class="product-list">
-      <div class="product">🔧 Hand Tools</div>
-      <div class="product">🛠 Power Tools</div>
-      <div class="product">💡 Electrical Items</div>
-      <div class="product">🪠 Plumbing Materials</div>
-      <div class="product">🖌 Paints & Brushes</div>
+      <button onclick="orderNow()">📦 Order Now on WhatsApp</button>
+      <button onclick="payOnline()">💳 Pay via UPI</button>
+    </section>
+
+    <section id="admin">
+      <h2>Admin Dashboard</h2>
+      <p>Total Products: <span id="totalProducts">5</span></p>
+      <button onclick="printInvoice()">🧾 Print Invoice</button>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>📞 +91 7584952687</p>
+      <p>📍 Kalna, Purba Bardhaman</p>
+    </section>
+  </main>
+
+  <!-- Product Modal -->
+  <div id="productModal" class="modal" hidden aria-modal="true" role="dialog" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Close modal">&times;</button>
+      <h2 id="modalTitle"></h2>
+      <div id="modalDesc"></div>
+      <div id="modalLinks"></div>
     </div>
-    <button onclick="orderNow()">📦 Order Now on WhatsApp</button>
-  </section>
-
-  <section id="about">
-    <h2>About Us</h2>
-    <p>Established in 1995, AN NANDI is a trusted name for quality hardware items and friendly service. We serve both residential and commercial needs.</p>
-  </section>
-
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <p><strong>📍 Address:</strong> 23/A Kalna,Purba Bardhaman,Pin-713409</p>
-    <p><strong>📞 Phone:</strong> +91 9434237719</p>
-    <p><strong>🕒 Timing:</strong> 9 AM – 8 PM (Mon–Sun)</p>
-  </section>
+    <div class="modal-overlay"></div>
+  </div>
 
   <footer>
     <p>&copy; 2025 AN NANDI. All rights reserved.</p>
