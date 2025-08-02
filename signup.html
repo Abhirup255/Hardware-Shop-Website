@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up - AN NANDI</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: #f8fafb;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #222;
+    }
+    .signup-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      width: 320px;
+    }
+    h2 {
+      margin-bottom: 24px;
+      color: #003973;
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      border: 2px solid #c3cfe2;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: #04519f;
+      box-shadow: 0 0 6px #1a87ffaa;
+    }
+    button {
+      width: 100%;
+      padding: 14px 0;
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      border: none;
+      border-radius: 40px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 12px 20px -6px rgba(0, 112, 255, 0.6);
+      transition: background 0.4s ease, box-shadow 0.3s ease;
+    }
+    button:hover,
+    button:focus {
+      background: linear-gradient(45deg, #0056b3, #003973);
+      box-shadow: 0 20px 30px -6px rgba(0, 112, 255, 0.8);
+      outline: none;
+    }
+    .message {
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+    }
+    .message.success {
+      color: #28a745;
+    }
+    .message.error {
+      color: #d9534f;
+    }
+    .link {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.95rem;
+    }
+    .link a {
+      color: #0056b3;
+      text-decoration: none;
+    }
+    .link a:hover,
+    .link a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Sign Up for AN NANDI</h2>
+    <div id="message" class="message"></div>
+    <form id="signupForm" autocomplete="off">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required placeholder="Choose a username" autofocus />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="Enter your email" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="Choose a password" minlength="6" />
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" minlength="6" />
+
+      <button type="submit">Sign Up</button>
+    </form>
+    <div class="link">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("signupForm");
+    const messageEl = document.getElementById("message");
+
+    function getUsers() {
+      const users = localStorage.getItem("users");
+      return users ? JSON.parse(users) : {};
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      messageEl.style.display = "none";
+      messageEl.textContent = "";
+      messageEl.className = "message";
+
+      const username = form.username.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+      const confirmPassword = form.confirmPassword.value;
+
+      if (password !== confirmPassword) {
+        messageEl.textContent = "Passwords do not match.";
+        messageEl.classList.add("error");
+        messageEl.style.display = "block";
+        return;
+      }
+
+      const users = getUsers();
+      if (users[username]) {
+        messageEl.textContent = "Username already taken. Please choose another.";
+        messageEl.classList.add("error");
+        messageEl.style.display = "block";
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        messageEl.textContent = "Please enter a valid email address.";
+        messageEl.classList.add("error");
+        messageEl.style.display = "block";
+        return;
+      }
+
+      // Save new user (for demo only, no password hashing!)
+      users[username] = { password, email, history: [] };
+      saveUsers(users);
+
+      messageEl.textContent = "Sign up successful! Redirecting to login...";
+      messageEl.classList.add("success");
+      messageEl.style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - AN NANDI</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    main {
+      max-width: 720px;
+      margin: 40px auto 80px;
+      padding: 0 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #003973;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    p.welcome-msg {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.2rem;
+      color: #04519f;
+      font-weight: 600;
+    }
+    body.dark-mode main h1,
+    body.dark-mode main p.welcome-msg {
+      color: #a2c6ff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    thead {
+      background: #04519f;
+      color: white;
+      font-weight: 700;
+    }
+    tr:nth-child(even) {
+      background: #f5f9ff;
+    }
+    td, th {
+      padding: 14px 18px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+      font-size: 1rem;
+    }
+    button.logout {
+      margin-top: 30px;
+      background: #d9534f;
+      border-radius: 35px;
+      width: 140px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 12px 20px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 15px -4px rgba(217,83,79,0.7);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      user-select: none;
+    }
+    button.logout:hover,
+    button.logout:focus {
+      background: #c9302c;
+      box-shadow: 0 15px 30px -7px rgba(217,83,79,0.9);
+      outline: none;
+    }
+    @media (max-width: 540px) {
+      td, th {
+        font-size: 0.9rem;
+        padding: 12px 10px;
+      }
+      button.logout {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Your Purchase History</h1>
+    <p class="welcome-msg">Welcome, <span id="welcomeUser"></span>!</p>
+    <table id="historyTable" aria-label="Purchase history table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Product</th>
+          <th>Date</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filled dynamically -->
+      </tbody>
+    </table>
+
+    <button class="logout" id="logoutBtn">Logout</button>
+  </main>
+
+  <script>
+    // Redirect to login if not logged in
+    const username = localStorage.getItem("loggedInUser");
+    if (!username) {
+      alert("You need to login first.");
+      window.location.href = "login.html";
+    }
+
+    document.getElementById('welcomeUser').textContent = username || "";
+
+    // Render purchase history
+    const history = JSON.parse(localStorage.getItem("purchaseHistory")) || [];
+    const tbody = document.querySelector("#historyTable tbody");
+
+    if (history.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; font-style: italic;">No purchase history found.</td></tr>';
+    } else {
+      history.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.id}</td>
+          <td>${item.product}</td>
+          <td>${item.date}</td>
+          <td>${item.amount}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Logout button clears session and redirects to login
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("purchaseHistory");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
